@@ -1,6 +1,13 @@
-from django.shortcuts import render
-from .models import Product
+from django.shortcuts import redirect, render
+from .models import Product 
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+
+######################################
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
+######################################
 # Create your views here.
 
 
@@ -15,8 +22,54 @@ def product_list (request):
     return render(request , 'product/product_list.html' , context)
     
 
-def product_details (request , slug):
+def product_details (request , id):
     
-    product_details = Product.objects.get(PRDSlug=slug)
+    product_details = Product.objects.get(id=id)
     context = {'product_details' : product_details}
     return render(request , 'product/product_details.html' , context)
+
+#########################################
+@login_required(login_url="/users/login")
+def cart_add(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.add(product=product)    
+    return redirect("product:product_list")
+
+
+@login_required(login_url="/users/login")
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.remove(product)
+    return redirect("product:cart_detail")
+
+
+@login_required(login_url="/users/login")
+def item_increment(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("product:cart_detail")
+
+
+@login_required(login_url="/users/login")
+def item_decrement(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.decrement(product=product)
+    return redirect("product:cart_detail")
+
+
+@login_required(login_url="/users/login")
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("product:cart_detail")
+
+
+@login_required(login_url="/users/login")
+def cart_detail(request):
+    return render(request, 'product/cart_detail.html')
+
+

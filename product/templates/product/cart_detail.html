@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% load static %}
+{% block body %}
+
+{% load cart_tag %}
+
+Total Length :: {{request.session.cart|length}}
+
+Cart Detail:
+
+{% for key,value in request.session.cart.items %}
+<p>product name :     {{value.name}} </p>
+<p>product price :    {{value.price}} </p>
+<p>product quantity : {{value.quantity}} </p>
+<p>quantity :         {{value.image}} </p>
+<p>Total {{ value.price|multiply:value.quantity }} </p>
+
+{% endfor %}
+
+
+  {% endblock body %}
+
