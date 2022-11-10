@@ -1,6 +1,11 @@
 from django.urls import path , include
 from . import views
-
+from rest_framework.routers import DefaultRouter
+from . import api
+############################
+router = DefaultRouter()
+router.register('', api.ProductViewSet, basename='productViewSet')
+############################
 app_name = 'product'
 
 urlpatterns = [
@@ -14,4 +19,5 @@ urlpatterns = [
     path('cart/cart_clear/', views.cart_clear, name='cart_clear'),
     path('cart/cart-detail/',views.cart_detail,name='cart_detail'),
     ############################
+    path('product/api/', include(router.urls) , name='postvs'),
 ]
