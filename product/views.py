@@ -8,17 +8,25 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 ######################################
+########## filter ###########
+from .filters import ProductFilter
+######### filter ###########
 # Create your views here.
 
 
 def product_list (request):
-    product_list = Product.objects.get_queryset().order_by('id')
+    product_list = Product.objects.get_queryset().order_by('-price')
+    
+    #Filter
+    filter = ProductFilter(request.GET, queryset=product_list)
+    product_list = filter.qs
+    #Filter
 
     paginator = Paginator(product_list, 2) # Show 2 contacts per page.
     page_number = request.GET.get('page')
     product_list = paginator.get_page(page_number)
 
-    context = {'product_list' : product_list}
+    context = {'product_list' : product_list , 'filter' : filter}
     return render(request , 'product/product_list.html' , context)
     
 

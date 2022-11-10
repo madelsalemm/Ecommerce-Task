@@ -11,6 +11,7 @@ Total Length :: {{request.session.cart|length}}
 Cart Detail:
 
 {% for key,value in request.session.cart.items %}
+
 <p>product name :     {{value.name}} </p>
 <p>product price :    {{value.price}} </p>
 <p>product quantity : {{value.quantity}} </p>

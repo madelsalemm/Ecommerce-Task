@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap5 %}
 {% block body %}
   <!--Main layout-->
   <main>
@@ -40,10 +41,10 @@
           </ul>
           <!-- Links -->
 
-          <form class="form-inline">
-            <div class="md-form my-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            </div>
+          <form class="form_inner white-bg" method="get">
+              {% csrf_token %}
+              {% bootstrap_form filter.form %}
+              <input class="boxed-btn3 w-100 mt-4" type="submit"  value="search">
           </form>
         </div>
         <!-- Collapsible content -->
@@ -66,8 +67,8 @@
 
                 <!--Card image-->
                 <div class="view overlay">
-                  {% if product.PRDImge %}
-                    <img src="{{product.PRDImge.url}}" class="card-img-top" alt="">
+                  {% if product.image %}
+                    <img src="{{product.image.url}}" class="card-img-top" alt="">
                   {% else %}
                   <img src="{% static 'site_static/img/no-image.jpg' %}" class="card-img-top" alt="">
                   {% endif %}
